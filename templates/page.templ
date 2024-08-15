@@ -6,15 +6,15 @@ templ Page(global, session int) {
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<link rel="stylesheet" href="/static/reset.css"/>
-			<link rel="stylesheet" href="/static/styles.css"/>
+			<link rel="stylesheet" href="/static/css/reset.css"/>
+			<link rel="stylesheet" href="/static/css/styles.css"/>
+			<script src="/static/js/htmx.min.js"></script>
 			<title>Counter App</title>
 		</head>
 		<body>
-			@Header()
+			<header>Counter App</header>
 			<main>
-				@Global(global)
-				@Session(session)
+				@Counts(global, session)
 			</main>
 		</body>
 	</html>

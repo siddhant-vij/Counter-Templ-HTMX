@@ -1,0 +1,34 @@
+package templates
+
+import "strconv"
+
+templ Counts(globalCounter, sessionCounter int) {
+	<form id="countsForm" action="/" method="POST" hx-post="/" hx-select="#countsForm" hx-swap="outerHTML">
+		<div class="global counter">
+			<div>
+				<h1 id="count">{ strconv.Itoa(globalCounter) }</h1>
+			</div>
+			<div>
+				<h3>Global</h3>
+			</div>
+			<div>
+				<button type="submit" name="global" value="global">
+					+1
+				</button>
+			</div>
+		</div>
+		<div class="session counter">
+			<div>
+				<h1 id="count">{ strconv.Itoa(sessionCounter) }</h1>
+			</div>
+			<div>
+				<h3>Session</h3>
+			</div>
+			<div>
+				<button type="submit" name="session" value="session">
+					+1
+				</button>
+			</div>
+		</div>
+	</form>
+}
