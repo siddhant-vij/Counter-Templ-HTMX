@@ -1,0 +1,17 @@
+package templates
+
+import "strconv"
+
+templ Session(sessionCounter int) {
+	<div class="global counter">
+		<div>
+			<h1 id="count">{ strconv.Itoa(sessionCounter) }</h1>
+		</div>
+		<div>
+			<h3>Session</h3>
+		</div>
+		<div>
+			<button>+1</button>
+		</div>
+	</div>
+}
