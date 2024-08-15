@@ -3,7 +3,14 @@ package templates
 import "strconv"
 
 templ Counts(globalCounter, sessionCounter int) {
-	<form id="countsForm" action="/" method="POST" hx-post="/" hx-select="#countsForm" hx-swap="outerHTML">
+	<form
+		id="countsForm"
+		action="/"
+		method="POST"
+		hx-post="/"
+		hx-select="#countsForm"
+		hx-swap="outerHTML"
+	>
 		<div class="global counter">
 			<div>
 				<h1 id="count">{ strconv.Itoa(globalCounter) }</h1>
