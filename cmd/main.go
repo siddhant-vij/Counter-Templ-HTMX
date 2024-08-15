@@ -10,34 +10,8 @@ import (
 	"github.com/siddhant-vij/Counter-Templ-HTMX/templates"
 )
 
-type GlobalState struct {
-	Count int
-}
-
-var global GlobalState
+var globalCount int
 var sessionManager *scs.SessionManager
-
-func getHandler(w http.ResponseWriter, r *http.Request) {
-	sessionCount := sessionManager.GetInt(r.Context(), "sessionCount")
-	pageComponent := templates.Page(global.Count, sessionCount)
-	pageComponent.Render(r.Context(), w)
-}
-
-func postHandler(w http.ResponseWriter, r *http.Request) {
-	r.ParseForm()
-
-	if r.Form.Has("global") {
-		global.Count++
-	}
-
-	if r.Form.Has("session") {
-		curCount := sessionManager.GetInt(r.Context(), "sessionCount")
-		curCount++
-		sessionManager.Put(r.Context(), "sessionCount", curCount)
-	}
-
-	getHandler(w, r)
-}
 
 func main() {
 	sessionManager = scs.New()
@@ -49,11 +23,23 @@ func main() {
 	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodPost {
-			postHandler(w, r)
-			return
-		}
-		getHandler(w, r)
+		sessionCount := sessionManager.GetInt(r.Context(), "sessionCount")
+		pageComponent := templates.Page(globalCount, sessionCount)
+		pageComponent.Render(r.Context(), w)
+	})
+
+	mux.HandleFunc("/global", func(w http.ResponseWriter, r *http.Request) {
+		globalCount++
+		gc := templates.GlobalCount(globalCount)
+		gc.Render(r.Context(), w)
+	})
+
+	mux.HandleFunc("/session", func(w http.ResponseWriter, r *http.Request) {
+		curCount := sessionManager.GetInt(r.Context(), "sessionCount")
+		curCount++
+		sessionManager.Put(r.Context(), "sessionCount", curCount)
+		sc := templates.SessionCount(curCount)
+		sc.Render(r.Context(), w)
 	})
 
 	muxWithSessionMiddleware := sessionManager.LoadAndSave(mux)

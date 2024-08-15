@@ -3,39 +3,48 @@ package templates
 import "strconv"
 
 templ Counts(globalCounter, sessionCounter int) {
-	<form
-		id="countsForm"
-		action="/"
-		method="POST"
-		hx-post="/"
-		hx-select="#countsForm"
-		hx-swap="outerHTML"
-	>
-		<div class="global counter">
-			<div>
-				<h1 id="count">{ strconv.Itoa(globalCounter) }</h1>
-			</div>
-			<div>
-				<h3>Global</h3>
-			</div>
-			<div>
-				<button type="submit" name="global" value="global">
-					+1
-				</button>
-			</div>
+	<div class="global counter">
+		@GlobalCount(globalCounter)
+		<div>
+			<h3>Global</h3>
 		</div>
-		<div class="session counter">
-			<div>
-				<h1 id="count">{ strconv.Itoa(sessionCounter) }</h1>
-			</div>
-			<div>
-				<h3>Session</h3>
-			</div>
-			<div>
-				<button type="submit" name="session" value="session">
-					+1
-				</button>
-			</div>
+		<form
+			id="globalCountForm"
+			hx-post="/global"
+			hx-target="#globalCount"
+			hx-swap="outerHTML"
+		>
+			<button type="submit" name="global" value="global">
+				+1
+			</button>
+		</form>
+	</div>
+	<div class="session counter">
+		@SessionCount(sessionCounter)
+		<div>
+			<h3>Session</h3>
 		</div>
-	</form>
+		<form
+			id="sessionCountForm"
+			hx-post="/session"
+			hx-target="#sessionCount"
+			hx-swap="outerHTML"
+		>
+			<button type="submit" name="session" value="session">
+				+1
+			</button>
+		</form>
+	</div>
+}
+
+templ GlobalCount(count int) {
+	<div>
+		<h1 id="globalCount">{ strconv.Itoa(count) }</h1>
+	</div>
+}
+
+templ SessionCount(count int) {
+	<div>
+		<h1 id="sessionCount">{ strconv.Itoa(count) }</h1>
+	</div>
 }

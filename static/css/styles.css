@@ -12,7 +12,7 @@ header {
   font-weight: bold;
 }
 
-#countsForm {
+main {
   display: flex;
   flex-direction: row;
   justify-content: center;
